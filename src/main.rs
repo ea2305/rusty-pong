@@ -17,13 +17,8 @@ use crate::pong::Pong;
 fn main() -> amethyst::Result<()> {
     amethyst::start_logger(Default::default());
 
-    let mut world = World::new();
     let app_root = application_root_dir()?;
     let display_config_path = app_root.join("config").join("display.ron");
-
-    // This line is not mentioned in the pong tutorial as it is specific to the context
-    // of the git repository. It only is a different location to load the assets from.
-    let assets_dir = app_root.join("examples/assets/");
 
     let game_data = GameDataBuilder::default().with_bundle(
         RenderingBundle::<DefaultBackend>::new()
@@ -38,7 +33,10 @@ fn main() -> amethyst::Result<()> {
     )?
     .with_bundle(TransformBundle::new())?;
 
+    let assets_dir = app_root.join("assets");
+    let mut world = World::new();
     let mut game = Application::new(assets_dir, Pong, game_data)?;
+
     game.run();
     Ok(())
 }
